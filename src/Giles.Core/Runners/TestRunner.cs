@@ -11,6 +11,7 @@ namespace Giles.Core.Runners
     {
     }
 
+
     public class TestRunner : ITestRunner
     {
         readonly GilesConfig config;

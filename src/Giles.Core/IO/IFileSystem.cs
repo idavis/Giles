@@ -111,6 +111,7 @@ namespace Giles.Core.IO
         bool BlockUntilFileAvailable(string path, TimeSpan timeout);
     }
 
+
     public class FileSystem : IFileSystem
     {
         string userDataPath = null;

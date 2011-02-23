@@ -1,5 +1,8 @@
-﻿namespace Giles.Core.Runners
+﻿using System;
+
+namespace Giles.Core.Runners
 {
+
     public enum TestRunState
     {
         Success,

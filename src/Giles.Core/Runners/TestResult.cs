@@ -2,6 +2,7 @@
 
 namespace Giles.Core.Runners
 {
+
     public class TestResult
     {
         public string Message;
@@ -12,6 +13,7 @@ namespace Giles.Core.Runners
         public TimeSpan TimeSpan;
         public int TotalTests;
     }
+
 
     public enum TestState
     {

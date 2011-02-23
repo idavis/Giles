@@ -7,7 +7,7 @@ using Machine.Specifications.Runner.Impl;
 namespace Giles.Runner.Machine.Specifications
 {
     [Serializable]
-    public class SpecificationRunner : IFrameworkRunner
+    public class SpecificationRunner : MarshalByRefObject, IFrameworkRunner
     {
         public Assembly TestAssembly { get; set; }
         public AppDomain AppDomain { get; set; }

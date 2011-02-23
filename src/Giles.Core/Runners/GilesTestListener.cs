@@ -7,6 +7,7 @@ using Machine.Specifications.Utility;
 
 namespace Giles.Core.Runners
 {
+
     public class GilesTestListener : ITestListener
     {
         readonly GilesConfig config;

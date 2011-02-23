@@ -9,6 +9,7 @@ using Giles.Core.Runners;
 
 namespace Giles.Core.Watchers
 {
+
     public class SourceWatcher : IDisposable
     {
         readonly IBuildRunner buildRunner;
@@ -90,7 +91,8 @@ namespace Giles.Core.Watchers
         public void RunNow()
         {
             buildRunner.Run();
-            var testFrameworkRunner = testRunnerResolver.Resolve(config.TestAssemblyPath).ToList();
+            var frameworkRunners = testRunnerResolver.Resolve(config.TestAssemblyPath);
+            var testFrameworkRunner = frameworkRunners.ToList();
 
             var listener = new GilesTestListener(config);
             testFrameworkRunner.ToList().ForEach(x =>

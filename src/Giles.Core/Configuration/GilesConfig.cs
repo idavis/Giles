@@ -8,6 +8,7 @@ using Giles.Core.UI;
 
 namespace Giles.Core.Configuration
 {
+
     public class GilesConfig : INotifyPropertyChanged
     {
         public IDictionary<string, RunnerAssembly> TestRunners = new Dictionary<string, RunnerAssembly>();

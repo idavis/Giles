@@ -11,6 +11,7 @@ namespace Giles.Core.Runners
         IEnumerable<IFrameworkRunner> Resolve(string assemblyLocation);
     }
 
+
     public class TestRunnerResolver : ITestRunnerResolver
     {
 
@@ -35,6 +36,10 @@ namespace Giles.Core.Runners
 
                 var result = assemblyRunner.LoadFrom(assemblyLocation);
 
+                // NOTE: I think what is happening here is the result from assemblyRunner.LoadFrom,
+                // which is an instance of SpecificationRunner, is getting loaded into the current
+                // domain instead of staying as a reference in the testRunnerAppDomain created in GetMSPecRunner
+
                 return result;
             }
             catch (Exception ex)
@@ -53,7 +58,7 @@ namespace Giles.Core.Runners
         }
     }
 
-    [Serializable]
+
     internal class TestFrameworkRunner
     {
         internal Func<AssemblyName, bool> CheckReference { get; set; }
@@ -61,22 +66,28 @@ namespace Giles.Core.Runners
     }
 
 
+
     public static class AppDomainHelper
     {
         public static AppDomain CreateAppDomain(string assemblyLocation)
         {
-            var domainSetup = new AppDomainSetup
-            {
-                ApplicationBase = Path.GetDirectoryName(assemblyLocation),
-                ApplicationName = new FileInfo(assemblyLocation).Name + DateTime.Now.Ticks,
-                ConfigurationFile = GetConfigFile(assemblyLocation),
-                ShadowCopyFiles = "true"
-                //ShadowCopyDirectories = Path.GetDirectoryName(assemblyLocation)
-            };
-            //domainSetup.PrivateBinPath = domainSetup.ApplicationBase;
-            domainSetup.CachePath = domainSetup.ApplicationName;
+            var domainSetup = GetDomainSetup(assemblyLocation);
 
             return AppDomain.CreateDomain(domainSetup.ApplicationName, null, domainSetup);
+        }
+
+        static AppDomainSetup GetDomainSetup(string assemblyLocation)
+        {
+            var domainSetup = new AppDomainSetup
+                {
+                    ApplicationBase = Path.GetDirectoryName(assemblyLocation),
+                    ApplicationName = new FileInfo(assemblyLocation).Name + DateTime.Now.Ticks,
+                    ConfigurationFile = GetConfigFile(assemblyLocation),
+                    ShadowCopyFiles = "true",
+                    ShadowCopyDirectories = Path.GetDirectoryName(assemblyLocation)
+                };
+            domainSetup.CachePath = domainSetup.ApplicationName;
+            return domainSetup;
         }
 
         static string GetConfigFile(string assemblyLocation)
@@ -85,7 +96,6 @@ namespace Giles.Core.Runners
 
             return File.Exists(configFile) ? configFile : null;
         }
-
     }
 
 
@@ -116,20 +126,22 @@ namespace Giles.Core.Runners
         {
             try
             {
-                Assembly.LoadFrom(assemblyLocation);
+                var assembly = Assembly.LoadFrom(assemblyLocation);
 
-                var assemblyInfo = new AssemblyNameProxy().GetAssemblyName(assemblyLocation);
+                //var assemblyInfo = new AssemblyNameProxy().GetAssemblyName(assemblyLocation);
 
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                var assembly = assemblies.Where(x => x.FullName == assemblyInfo.FullName).FirstOrDefault();
+                //var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                //var assembly = assemblies.Where(x => x.FullName == assemblyInfo.FullName).FirstOrDefault();
                 var referencedAssemblies =
                     assembly.
                         GetReferencedAssemblies();
 
                 var testFrameworkRunners = runners.Where(runner => referencedAssemblies.Count(runner.CheckReference) > 0);
-                
+
                 var frameworkRunners = testFrameworkRunners.Select(
                     runner => runner.GetTheRunner.Invoke(assemblyLocation)).ToList();
+
+                frameworkRunners.ForEach(x => x.TestAssembly = assembly);
 
                 referencedAssemblies = null;
                 testFrameworkRunners = null;

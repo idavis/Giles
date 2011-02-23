@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.IO;
 
@@ -7,6 +8,7 @@ namespace Giles.Core.Runners
     {
         ExecutionResult Execute(string executable, string arguments);
     }
+
 
     public class CommandProcessExecutor : ICommandProcessExecutor
     {

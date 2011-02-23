@@ -9,6 +9,7 @@ namespace Giles.Core.Runners
     {
     }
 
+
     public class BuildRunner : IBuildRunner
     {
         readonly GilesConfig config;

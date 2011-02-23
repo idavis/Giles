@@ -4,6 +4,7 @@ using Growl.Connector;
 
 namespace Giles.Core.UI
 {
+
     public class GrowlUserDisplay : IUserDisplay
     {
         private GrowlConnector growl;

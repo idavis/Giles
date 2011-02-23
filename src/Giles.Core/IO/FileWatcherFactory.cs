@@ -1,7 +1,9 @@
+using System;
 using System.IO;
 
 namespace Giles.Core.IO
 {
+
     public class FileWatcherFactory : IFileWatcherFactory
     {
         readonly IFileSystem fileSystem;

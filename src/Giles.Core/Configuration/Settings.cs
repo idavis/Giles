@@ -1,7 +1,9 @@
+using System;
 using System.Configuration;
 
 namespace Giles.Core.Configuration
 {
+
     public class Settings
     {
         public string MsBuild

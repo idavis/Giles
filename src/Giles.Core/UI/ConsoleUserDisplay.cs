@@ -3,6 +3,7 @@ using Giles.Core.Runners;
 
 namespace Giles.Core.UI
 {
+
     public class ConsoleUserDisplay : IUserDisplay
     {
         readonly ConsoleColor defaultConsoleColor;
