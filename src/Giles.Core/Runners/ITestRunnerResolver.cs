@@ -8,20 +8,97 @@ namespace Giles.Core.Runners
 {
     public interface ITestRunnerResolver
     {
-        IEnumerable<IFrameworkRunner> Resolve(Assembly assembly);
+        IEnumerable<IFrameworkRunner> Resolve(string assemblyLocation);
     }
 
     public class TestRunnerResolver : ITestRunnerResolver
     {
-        readonly Func<AssemblyName, bool> mSpecRunnerPredicate =
-            assemblyName => assemblyName.Name == "Machine.Specifications";
 
+
+        public IEnumerable<IFrameworkRunner> Resolve(string assemblyLocation)
+        {
+            AppDomain newGilesAppDomain = null;
+
+            try
+            {
+                newGilesAppDomain = AppDomainHelper.CreateAppDomain(Assembly.GetAssembly(typeof(GilesAssemblyRunner)).Location);
+
+                var assemblyRunner =
+                    newGilesAppDomain.CreateInstanceFromAndUnwrap("Giles.Core.dll",
+                                                                  typeof(GilesAssemblyRunner).FullName,
+                                                                  true,
+                                                                  0,
+                                                                  null,
+                                                                  null,
+                                                                  null,
+                                                                  null) as GilesAssemblyRunner;
+
+                var result = assemblyRunner.LoadFrom(assemblyLocation);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                AppDomain.Unload(newGilesAppDomain);
+                newGilesAppDomain = null;
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+
+            return null;
+        }
+    }
+
+    [Serializable]
+    internal class TestFrameworkRunner
+    {
+        internal Func<AssemblyName, bool> CheckReference { get; set; }
+        internal Func<string, IFrameworkRunner> GetTheRunner { get; set; }
+    }
+
+
+    public static class AppDomainHelper
+    {
+        public static AppDomain CreateAppDomain(string assemblyLocation)
+        {
+            var domainSetup = new AppDomainSetup
+            {
+                ApplicationBase = Path.GetDirectoryName(assemblyLocation),
+                ApplicationName = new FileInfo(assemblyLocation).Name + DateTime.Now.Ticks,
+                ConfigurationFile = GetConfigFile(assemblyLocation),
+                ShadowCopyFiles = "true"
+                //ShadowCopyDirectories = Path.GetDirectoryName(assemblyLocation)
+            };
+            //domainSetup.PrivateBinPath = domainSetup.ApplicationBase;
+            domainSetup.CachePath = domainSetup.ApplicationName;
+
+            return AppDomain.CreateDomain(domainSetup.ApplicationName, null, domainSetup);
+        }
+
+        static string GetConfigFile(string assemblyLocation)
+        {
+            var configFile = assemblyLocation + ".config";
+
+            return File.Exists(configFile) ? configFile : null;
+        }
+
+    }
+
+
+
+
+
+
+    internal class GilesAssemblyRunner : MarshalByRefObject
+    {
         List<TestFrameworkRunner> runners;
 
-        public TestRunnerResolver()
-        {
-            BuildRunnerList();
-        }
+        readonly Func<AssemblyName, bool> mSpecRunnerPredicate =
+            assemblyName => assemblyName.Name == "Machine.Specifications";
 
 
         void BuildRunnerList()
@@ -30,23 +107,47 @@ namespace Giles.Core.Runners
                 {new TestFrameworkRunner {CheckReference = mSpecRunnerPredicate, GetTheRunner = GetMSpecRunner}};
         }
 
-
-        public IEnumerable<IFrameworkRunner> Resolve(Assembly assembly)
+        public GilesAssemblyRunner()
         {
-            var referencedAssemblies = assembly.GetReferencedAssemblies();
-
-            var result =
-                runners.Where(runner => referencedAssemblies.Count(runner.CheckReference) > 0).Select(
-                    runner => runner.GetTheRunner.Invoke());
-
-            return result;
+            BuildRunnerList();
         }
 
+        public List<IFrameworkRunner> LoadFrom(string assemblyLocation)
+        {
+            try
+            {
+                Assembly.LoadFrom(assemblyLocation);
 
-        static IFrameworkRunner GetMSpecRunner()
+                var assemblyInfo = new AssemblyNameProxy().GetAssemblyName(assemblyLocation);
+
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                var assembly = assemblies.Where(x => x.FullName == assemblyInfo.FullName).FirstOrDefault();
+                var referencedAssemblies =
+                    assembly.
+                        GetReferencedAssemblies();
+
+                var testFrameworkRunners = runners.Where(runner => referencedAssemblies.Count(runner.CheckReference) > 0);
+                
+                var frameworkRunners = testFrameworkRunners.Select(
+                    runner => runner.GetTheRunner.Invoke(assemblyLocation)).ToList();
+
+                referencedAssemblies = null;
+                testFrameworkRunners = null;
+
+                return
+                    frameworkRunners;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            return null;
+        }
+
+        static IFrameworkRunner GetMSpecRunner(string testAssemblyLocation)
         {
             var assemblyLocation =
-                Path.Combine(Path.GetDirectoryName(typeof (TestRunnerResolver).Assembly.Location),
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                              "Giles.Runner.Machine.Specifications.dll");
 
             var runner = GetRunner(assemblyLocation);
@@ -54,21 +155,21 @@ namespace Giles.Core.Runners
             if (runner == null)
                 return null;
 
-            return Activator.CreateInstance(runner) as IFrameworkRunner;
+
+            var testRunnerAppDomain = AppDomainHelper.CreateAppDomain(testAssemblyLocation);
+            var result = testRunnerAppDomain.CreateInstanceFromAndUnwrap(assemblyLocation, runner.FullName) as IFrameworkRunner;
+            result.AppDomain = testRunnerAppDomain;
+
+            return result;
         }
 
 
         static Type GetRunner(string assemblyLocation)
         {
             return Assembly.LoadFrom(assemblyLocation).GetTypes()
-                .Where(x => typeof (IFrameworkRunner).IsAssignableFrom(x) && x.IsClass)
+                .Where(x => typeof(IFrameworkRunner).IsAssignableFrom(x) && x.IsClass)
                 .FirstOrDefault();
         }
-    }
 
-    internal class TestFrameworkRunner
-    {
-        internal Func<AssemblyName, bool> CheckReference { get; set; }
-        internal Func<IFrameworkRunner> GetTheRunner { get; set; }
     }
 }

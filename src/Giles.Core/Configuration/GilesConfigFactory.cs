@@ -33,7 +33,6 @@ namespace Giles.Core.Configuration
         {
             LocateTestRunners();
             config.TestAssemblyPath = testAssemblyPath;
-            config.TestAssembly = Assembly.LoadFrom(config.TestAssemblyPath);
             config.SolutionPath = solutionPath;
 
             config.UserDisplay = new List<IUserDisplay> {new ConsoleUserDisplay(), new GrowlUserDisplay()};

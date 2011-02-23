@@ -47,7 +47,5 @@ namespace Giles.Core.Configuration
         }
 
         public ICommandProcessExecutor Executor { get; set; }
-
-        public Assembly TestAssembly { get; set; }
     }
 }

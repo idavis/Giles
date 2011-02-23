@@ -30,7 +30,7 @@ namespace Giles.Core.Watchers
             this.config = config;
             this.testRunnerResolver = testRunnerResolver;
             this.testRunner = testRunner;
-            buildTimer = new Timer {AutoReset = false, Enabled = false, Interval = config.BuildDelay};
+            buildTimer = new Timer { AutoReset = false, Enabled = false, Interval = config.BuildDelay };
             config.PropertyChanged += config_PropertyChanged;
             buildTimer.Elapsed += buildTimer_Elapsed;
         }
@@ -90,10 +90,17 @@ namespace Giles.Core.Watchers
         public void RunNow()
         {
             buildRunner.Run();
-            var testFrameworkRunner = testRunnerResolver.Resolve(config.TestAssembly).ToList();
+            var testFrameworkRunner = testRunnerResolver.Resolve(config.TestAssemblyPath).ToList();
 
             var listener = new GilesTestListener(config);
-            testFrameworkRunner.ForEach(x => x.RunAssembly(listener, config.TestAssembly));
+            testFrameworkRunner.ToList().ForEach(x =>
+                                            {
+                                                x.RunAssembly(listener);
+                                                AppDomain.Unload(x.AppDomain);
+                                                x.AppDomain = null;
+                                                GC.Collect();
+                                                GC.WaitForPendingFinalizers();
+                                            });
 
             //var outputs = listener.GetOutput().ToList();
 
