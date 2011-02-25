@@ -103,10 +103,6 @@ namespace Giles.Core.Watchers
                                                 GC.Collect();
                                                 GC.WaitForPendingFinalizers();
                                             });
-
-            //var outputs = listener.GetOutput().ToList();
-
-            //outputs.ForEach(x => Console.WriteLine("Category {0}\n{1}", x.Key, x.Value.ToString()));
             listener.DisplayResults();
         }
     }

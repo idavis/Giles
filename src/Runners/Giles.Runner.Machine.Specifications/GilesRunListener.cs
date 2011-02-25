@@ -7,7 +7,7 @@ namespace Giles.Runner.Machine.Specifications
 {
     public class GilesRunListener : ISpecificationRunListener
     {
-        readonly ITestListener testListener;
+        readonly TestListenerBase testListener;
         readonly ResultFormatterFactory resultFormatterFactory;
         
         TestRunState testRunState = TestRunState.NoTests;
@@ -18,7 +18,7 @@ namespace Giles.Runner.Machine.Specifications
 
         readonly List<TestResult> testResults = new List<TestResult>();
 
-        public GilesRunListener(ITestListener testListener)
+        public GilesRunListener(TestListenerBase testListener)
         {
             this.testListener = testListener;
             resultFormatterFactory = new ResultFormatterFactory();

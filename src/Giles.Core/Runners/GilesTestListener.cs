@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Giles.Core.Configuration;
-using Machine.Specifications.Utility;
+using Giles.Core.Functional;
 
 namespace Giles.Core.Runners
 {
 
-    public class GilesTestListener : ITestListener
+    public class GilesTestListener : TestListenerBase
     {
         readonly GilesConfig config;
         readonly Dictionary<string, StringBuilder> output = new Dictionary<string, StringBuilder>();
@@ -37,7 +37,7 @@ namespace Giles.Core.Runners
             return output;
         }
 
-        public void WriteLine(string text, string category)
+        public override void WriteLine(string text, string category)
         {
             if (!GetOutput().ContainsKey(category))
                 GetOutput().Add(category, new StringBuilder());
@@ -45,7 +45,7 @@ namespace Giles.Core.Runners
             GetOutput()[category].AppendLine(text);
         }
 
-        public void AddTestSummary(TestResult summary)
+        public override void AddTestSummary(TestResult summary)
         {
             if (!testRunnerResults.ContainsKey(summary.TestRunner))
                 testRunnerResults.Add(summary.TestRunner, SetupTestResults());

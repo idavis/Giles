@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Giles.Core.Configuration;
-using Machine.Specifications.Utility;
+using Giles.Core.Functional;
 
 namespace Giles.Core.Runners
 {

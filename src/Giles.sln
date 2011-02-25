@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giles.Runner.Machine.Specif
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giles.Runner.Machine.Specifications", "Runners\Giles.Runner.Machine.Specifications\Giles.Runner.Machine.Specifications.csproj", "{88C6CC22-B9F2-41B8-8E4F-9500902AF874}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giles.UserDisplays", "Giles.UserDisplays\Giles.UserDisplays.csproj", "{8064343D-3456-4AE3-ABAF-964082D3A067}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		AutomatedRelease|Any CPU = AutomatedRelease|Any CPU
@@ -112,6 +114,21 @@ Global
 		{88C6CC22-B9F2-41B8-8E4F-9500902AF874}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{88C6CC22-B9F2-41B8-8E4F-9500902AF874}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{88C6CC22-B9F2-41B8-8E4F-9500902AF874}.Release|x86.ActiveCfg = Release|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.AutomatedRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.AutomatedRelease|Any CPU.Build.0 = Release|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.AutomatedRelease|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.AutomatedRelease|Mixed Platforms.Build.0 = Release|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.AutomatedRelease|x86.ActiveCfg = Release|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8064343D-3456-4AE3-ABAF-964082D3A067}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

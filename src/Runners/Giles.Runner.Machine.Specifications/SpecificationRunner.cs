@@ -23,7 +23,7 @@ namespace Giles.Runner.Machine.Specifications
             get { return AppDomain.CurrentDomain; }
         }
 
-        public TestRunState RunAssembly(ITestListener testListener)
+        public TestRunState RunAssembly(TestListenerBase testListener)
         {
             var listener = new GilesRunListener(testListener);
             var runner = new AppDomainRunner(listener, RunOptions.Default);

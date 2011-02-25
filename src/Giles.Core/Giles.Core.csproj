@@ -56,6 +56,7 @@
     <Compile Include="Configuration\RunnerAssembly.cs" />
     <Compile Include="Configuration\Settings.cs" />
     <Compile Include="Encryption\EncryptionHelper.cs" />
+    <Compile Include="Functional\Functional.cs" />
     <Compile Include="IO\IFileSystem.cs" />
     <Compile Include="IO\FileWatcherFactory.cs" />
     <Compile Include="IO\IFileWatcherFactory.cs" />
@@ -65,31 +66,22 @@
     <Compile Include="Runners\GilesTestListener.cs" />
     <Compile Include="Runners\IFrameworkRunner.cs" />
     <Compile Include="Runners\IRunner.cs" />
-    <Compile Include="Runners\ITestListener.cs" />
+    <Compile Include="Runners\TestListenerBase.cs" />
     <Compile Include="Runners\ITestRunnerResolver.cs" />
     <Compile Include="Runners\TestResult.cs" />
     <Compile Include="Runners\TestRunner.cs" />
     <Compile Include="Runners\TestRunState.cs" />
     <Compile Include="UI\ConsoleUserDisplay.cs" />
-    <Compile Include="UI\GrowlUserDisplay.cs" />
     <Compile Include="UI\IUserDisplay.cs" />
     <Compile Include="Watchers\SourceWatcher.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Growl.Connector">
-      <HintPath>..\..\lib\Growl.Connector\Growl.Connector.dll</HintPath>
-    </Reference>
-    <Reference Include="Growl.CoreLibrary">
-      <HintPath>..\..\lib\Growl.Connector\Growl.CoreLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="Machine.Specifications">
-      <HintPath>..\..\tools\mspec\Machine.Specifications.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

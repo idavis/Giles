@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Giles.Core.Configuration;
 
 namespace Giles.Core.Runners
 {
@@ -156,20 +157,26 @@ namespace Giles.Core.Runners
             return null;
         }
 
+
         static IFrameworkRunner GetMSpecRunner(string testAssemblyLocation)
         {
-            var assemblyLocation =
+            var runnerAssemblyLocation =
                 Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                              "Giles.Runner.Machine.Specifications.dll");
+            var coreAssemblyLocation =
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                             "Giles.Core.dll");
 
-            var runner = GetRunner(assemblyLocation);
+            var runner = GetRunner(runnerAssemblyLocation);
 
             if (runner == null)
                 return null;
 
 
             var testRunnerAppDomain = AppDomainHelper.CreateAppDomain(testAssemblyLocation);
-            var result = testRunnerAppDomain.CreateInstanceFromAndUnwrap(assemblyLocation, runner.FullName) as IFrameworkRunner;
+
+            var settings = testRunnerAppDomain.CreateInstanceFromAndUnwrap(coreAssemblyLocation, typeof(Settings).FullName ) as Settings;
+            var result = testRunnerAppDomain.CreateInstanceFromAndUnwrap(runnerAssemblyLocation, runner.FullName) as IFrameworkRunner;
             result.AppDomain = testRunnerAppDomain;
 
             return result;

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using Giles.Core.Functional;
 using Giles.Core.IO;
 using Giles.Core.Runners;
 using Giles.Core.UI;
-using Machine.Specifications.Utility;
 
 namespace Giles.Core.Configuration
 {
@@ -35,7 +34,8 @@ namespace Giles.Core.Configuration
             config.TestAssemblyPath = testAssemblyPath;
             config.SolutionPath = solutionPath;
 
-            config.UserDisplay = new List<IUserDisplay> {new ConsoleUserDisplay(), new GrowlUserDisplay()};
+            //config.UserDisplay = new List<IUserDisplay> {new ConsoleUserDisplay(), new GrowlUserDisplay()};
+            config.UserDisplay = new List<IUserDisplay> {new ConsoleUserDisplay()};
             config.Executor = new CommandProcessExecutor();
             return config;
         }

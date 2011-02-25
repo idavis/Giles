@@ -1,8 +1,9 @@
-using System;
+﻿using System;
 using Giles.Core.Runners;
+using Giles.Core.UI;
 using Growl.Connector;
 
-namespace Giles.Core.UI
+namespace Giles.UserDisplays
 {
 
     public class GrowlUserDisplay : IUserDisplay
