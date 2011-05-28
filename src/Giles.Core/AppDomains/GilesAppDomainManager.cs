@@ -16,6 +16,8 @@ namespace Giles.Core.AppDomains
 
         public IEnumerable<SessionResults> Run(string testAssemblyPath)
         {
+            if (testAssemblyPath == null) throw new ArgumentNullException("testAssemblyPath", "Test Assembly Path cannot be null. Check your Giles configuration.");
+            
             var runner = SetupRunner(testAssemblyPath);
 
             var results = runner.Run(testAssemblyPath);
@@ -31,6 +33,8 @@ namespace Giles.Core.AppDomains
 
             RemoveGilesFromTheTestAssemblyFolder(testAssemblyFolder);
         }
+
+
 
         private GilesAppDomainRunner SetupRunner(string testAssemblyPath)
         {

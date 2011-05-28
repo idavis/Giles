@@ -15,7 +15,7 @@ namespace Giles {
         static GilesConfig config;
         static bool QuitRequested = false;
 
-        static void Main(string[] args) {
+        static void Main(string[] args) {           
             var options = new CLOptions();
 
             var parser = new CommandLineParser(
@@ -25,6 +25,8 @@ namespace Giles {
                 Console.WriteLine("Unknown command line arguments");
                 Environment.Exit(1);
             }
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) => Console.WriteLine("Critical Error: {0}", e.ExceptionObject.ToString());
 
             ConsoleSetup();
 

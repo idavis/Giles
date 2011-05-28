@@ -52,6 +52,8 @@
     <Compile Include="..\ProjectVersion.cs">
       <Link>Properties\ProjectVersion.cs</Link>
     </Compile>
+    <Compile Include="Console\ProgramSpecs.cs" />
+    <Compile Include="Core\AppDomains\GilesAppDomainManagerSpecs.cs" />
     <Compile Include="Core\Configuration\TestAssemblyFinderSpecs.cs" />
     <Compile Include="TestResources.cs" />
     <Compile Include="Core\Configuration\GilesConfigFactorySpecs.cs" />
@@ -70,6 +72,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\manual\mspec\Machine.Specifications.dll</HintPath>
     </Reference>
+    <Reference Include="Ninject, Version=2.1.0.76, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL" />
     <Reference Include="NSubstitute">
       <HintPath>..\..\lib\NSubstitute.1.0.0.0\lib\35\NSubstitute.dll</HintPath>
     </Reference>
@@ -81,6 +84,10 @@
     <ProjectReference Include="..\Giles.Core\Giles.Core.csproj">
       <Project>{9039E7FA-989E-46ED-B031-FB67571E8385}</Project>
       <Name>Giles.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Giles\Giles.csproj">
+      <Project>{ACCEC948-8032-4D2B-AD53-1DD1390EDA78}</Project>
+      <Name>Giles</Name>
     </ProjectReference>
     <ProjectReference Include="..\Runners\Giles.Runner.Machine.Specifications\Giles.Runner.Machine.Specifications.csproj">
       <Project>{88C6CC22-B9F2-41B8-8E4F-9500902AF874}</Project>
