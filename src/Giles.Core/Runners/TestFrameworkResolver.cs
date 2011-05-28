@@ -50,7 +50,7 @@ namespace Giles.Core.Runners
         /// <returns>List of new instances of classes which implement, extend or are of type T</returns>
         public static IEnumerable<T> GetNewInstancesByType<T>() where T : class
         {
-            var files = AssemblyExtensions.GetAssembliesFromExecutingPath();
+            var files = AssemblyExtensions.GetAssembliesFromExecutingPath().Where(x => Path.GetFileName(x).StartsWith("Giles"));
 
             var result = new List<T>();
 

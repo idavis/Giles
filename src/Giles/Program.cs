@@ -27,7 +27,7 @@ namespace Giles {
             }
 
             AppDomain.CurrentDomain.UnhandledException += (sender, e) => Console.WriteLine("Critical Error: {0}", e.ExceptionObject.ToString());
-
+            
             ConsoleSetup();
 
             SetupSourceWatcher(options);

@@ -37,7 +37,8 @@ namespace Giles.Core.Utility
         {
             var result = new List<Type>();
 
-            assembly.GetTypes()
+            var types = assembly.GetTypes();
+            types
                 .Each(x =>
                 {
                     if (x.IsAbstract || x.IsInterface)
