@@ -22,7 +22,7 @@ end
 
 
 mspec :specifications do |mspec|
-	mspec.command = "lib/manual/mspec/mspec.exe"
+	mspec.command = "lib/Machine.Specifications.0.4.13.0/tools/mspec-clr4.exe"
 	mspec.assemblies = "build/Giles.Specs.dll"
 	mspec.html_output = "report/Specs"
 end
